@@ -12,6 +12,14 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  Expanded displayExpanded(Color color) {
+    return Expanded(
+      child: ReusableCard(
+        color: color,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,46 +28,26 @@ class _InputPageState extends State<InputPage> {
       ),
       body: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: ReusableCard(
-                    color: defaultReusableCardColor,
-                  ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    color: defaultReusableCardColor,
-                  ),
-                ),
+                displayExpanded(defaultReusableCardColor),
+                displayExpanded(defaultReusableCardColor),
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: ReusableCard(
-                    color: defaultReusableCardColor,
-                  ),
-                ),
+                displayExpanded(defaultReusableCardColor),
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: ReusableCard(
-                    color: defaultReusableCardColor,
-                  ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    color: defaultReusableCardColor,
-                  ),
-                ),
+                displayExpanded(defaultReusableCardColor),
+                displayExpanded(defaultReusableCardColor),
               ],
             ),
           ),
@@ -68,6 +56,7 @@ class _InputPageState extends State<InputPage> {
             margin: const EdgeInsets.only(top: 10.0),
             width: double.infinity,
             height: bottomContainerHeight,
+            child: const Center(child: Text('test')),
           )
         ],
       ),
