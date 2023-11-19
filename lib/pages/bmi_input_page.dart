@@ -12,6 +12,48 @@ class BmiInputPage extends StatefulWidget {
 }
 
 class _BmiInputPageState extends State<BmiInputPage> {
+  int selectedIndex = -1;
+
+  void updateSelectedIndex(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  final List<List<Map<String, dynamic>>> rowsCardData = [
+    [
+      {
+        'index': 0,
+        'iconLabel': 'Male',
+        'iconData': FontAwesomeIcons.mars,
+      },
+      {
+        'index': 1,
+        'iconLabel': 'Female',
+        'iconData': FontAwesomeIcons.venus,
+      },
+    ],
+    [
+      {
+        'index': 2,
+        'iconLabel': 'Male',
+        'iconData': FontAwesomeIcons.mars,
+      },
+    ],
+    [
+      {
+        'index': 3,
+        'iconLabel': 'Male',
+        'iconData': FontAwesomeIcons.mars,
+      },
+      {
+        'index': 4,
+        'iconLabel': 'Male',
+        'iconData': FontAwesomeIcons.mars,
+      },
+    ],
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,60 +61,33 @@ class _BmiInputPageState extends State<BmiInputPage> {
         title: const Center(child: Text('BMI CALCULATOR')),
       ),
       body: Column(
-        children: [
-          const Expanded(
+        children: rowsCardData.map((rowCardData) {
+          return Expanded(
             child: Row(
-              children: [
-                ExpandedCard(
-                  cardColor: defaultCardColor,
-                  iconLabel: 'Male',
-                  iconData: FontAwesomeIcons.mars,
-                ),
-                ExpandedCard(
-                  cardColor: defaultCardColor,
-                  iconLabel: 'Female',
-                  iconData: FontAwesomeIcons.venus,
-                ),
-              ],
+              children: rowCardData.asMap().entries.map((entry) {
+                final Map<String, dynamic> cardData = entry.value;
+                final int cardIndex = cardData['index'];
+                return ExpandedCard(
+                  cardColor: selectedIndex == cardIndex ? activeCardColor : defaultCardColor,
+                  iconLabel: cardData['iconLabel'],
+                  iconData: cardData['iconData'],
+                  onTap: () {
+                    updateSelectedIndex(cardIndex);
+                  },
+                );
+              }).toList(),
             ),
-          ),
-          const Expanded(
-            child: Row(
-              children: [
-                ExpandedCard(
-                  cardColor: defaultCardColor,
-                  iconLabel: 'Male',
-                  iconData: FontAwesomeIcons.mars,
-                ),
-              ],
-            ),
-          ),
-          const Expanded(
-            child: Row(
-              children: [
-                ExpandedCard(
-                  cardColor: defaultCardColor,
-                  iconLabel: 'Male',
-                  iconData: FontAwesomeIcons.mars,
-                ),
-                ExpandedCard(
-                  cardColor: defaultCardColor,
-                  iconLabel: 'Male',
-                  iconData: FontAwesomeIcons.mars,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            color: defaultBottomContainerColor,
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: bottomContainerHeight,
-            child: const Center(
-              child: Text('test'),
-            ),
-          )
-        ],
+          );
+        }).toList(),
+      ),
+      bottomNavigationBar: Container(
+        color: defaultBottomContainerColor,
+        margin: const EdgeInsets.only(top: 10.0),
+        width: double.infinity,
+        height: bottomContainerHeight,
+        child: const Center(
+          child: Text('test'),
+        ),
       ),
     );
   }

@@ -10,11 +10,13 @@ class ExpandedCard extends StatefulWidget {
     required this.cardColor,
     required this.iconLabel,
     required this.iconData,
+    required this.onTap,
   });
 
   final Color cardColor;
   final IconData iconData;
   final String iconLabel;
+  final VoidCallback onTap;
 
   @override
   State<ExpandedCard> createState() => _ExpandedCardState();
@@ -25,7 +27,7 @@ class _ExpandedCardState extends State<ExpandedCard> {
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: () {},
+        onTap: widget.onTap,
         child: CardContainer(
           cardColor: widget.cardColor,
           cardChild: IconContent(
