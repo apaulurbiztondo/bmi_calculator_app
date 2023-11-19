@@ -26,14 +26,12 @@ class _ExpandedCardState extends State<ExpandedCard> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
+      child: CardContainer(
         onTap: widget.onTap,
-        child: CardContainer(
-          cardColor: widget.cardColor,
-          cardChild: IconContent(
-            iconLabel: widget.iconLabel,
-            iconData: widget.iconData,
-          ),
+        cardColor: widget.cardColor,
+        cardChild: IconContent(
+          iconLabel: widget.iconLabel,
+          iconData: widget.iconData,
         ),
       ),
     );
