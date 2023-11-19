@@ -64,7 +64,7 @@ class _BmiInputPageState extends State<BmiInputPage> {
                 final Map<String, dynamic> cardData = entry.value;
                 final int rowCardIndex = ++cardIndex;
                 return ExpandedCard(
-                  cardColor: selectedIndex == rowCardIndex ? activeCardColor : defaultCardColor,
+                  cardColor: selectedIndex == rowCardIndex ? kActiveCardColor : kDefaultCardColor,
                   iconLabel: cardData['iconLabel'],
                   iconData: cardData['iconData'],
                   onTap: () {
@@ -77,10 +77,10 @@ class _BmiInputPageState extends State<BmiInputPage> {
         }).toList(),
       ),
       bottomNavigationBar: Container(
-        color: defaultBottomContainerColor,
+        color: kDefaultBottomContainerColor,
         margin: const EdgeInsets.only(top: 10.0),
         width: double.infinity,
-        height: bottomContainerHeight,
+        height: kBottomContainerHeight,
         child: const Center(
           child: Text('test'),
         ),
