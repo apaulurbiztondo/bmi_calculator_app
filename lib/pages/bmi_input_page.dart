@@ -23,31 +23,26 @@ class _BmiInputPageState extends State<BmiInputPage> {
   final List<List<Map<String, dynamic>>> rowsCardData = [
     [
       {
-        'index': 0,
         'iconLabel': 'Male',
         'iconData': FontAwesomeIcons.mars,
       },
       {
-        'index': 1,
         'iconLabel': 'Female',
         'iconData': FontAwesomeIcons.venus,
       },
     ],
     [
       {
-        'index': 2,
         'iconLabel': 'Male',
         'iconData': FontAwesomeIcons.mars,
       },
     ],
     [
       {
-        'index': 3,
         'iconLabel': 'Male',
         'iconData': FontAwesomeIcons.mars,
       },
       {
-        'index': 4,
         'iconLabel': 'Male',
         'iconData': FontAwesomeIcons.mars,
       },
@@ -56,6 +51,7 @@ class _BmiInputPageState extends State<BmiInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    int cardIndex = -1;
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('BMI CALCULATOR')),
@@ -66,13 +62,13 @@ class _BmiInputPageState extends State<BmiInputPage> {
             child: Row(
               children: rowCardData.asMap().entries.map((entry) {
                 final Map<String, dynamic> cardData = entry.value;
-                final int cardIndex = cardData['index'];
+                final int rowCardIndex = ++cardIndex;
                 return ExpandedCard(
-                  cardColor: selectedIndex == cardIndex ? activeCardColor : defaultCardColor,
+                  cardColor: selectedIndex == rowCardIndex ? activeCardColor : defaultCardColor,
                   iconLabel: cardData['iconLabel'],
                   iconData: cardData['iconData'],
                   onTap: () {
-                    updateSelectedIndex(cardIndex);
+                    updateSelectedIndex(rowCardIndex);
                   },
                 );
               }).toList(),
