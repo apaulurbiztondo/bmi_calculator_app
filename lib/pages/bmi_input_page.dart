@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../constants/constant.dart';
-import '../widgets/expanded_card.dart';
+import '../widgets/card_container.dart';
+import '../widgets/icon_content.dart';
 
 class BmiInputPage extends StatefulWidget {
   const BmiInputPage({super.key});
@@ -12,6 +13,7 @@ class BmiInputPage extends StatefulWidget {
 }
 
 class _BmiInputPageState extends State<BmiInputPage> {
+  int height = 180;
   int selectedIndex = -1;
 
   void updateSelectedIndex(int index) {
@@ -20,60 +22,153 @@ class _BmiInputPageState extends State<BmiInputPage> {
     });
   }
 
-  final List<List<Map<String, dynamic>>> rowsCardData = [
-    [
-      {
-        'iconLabel': 'Male',
-        'iconData': FontAwesomeIcons.mars,
-      },
-      {
-        'iconLabel': 'Female',
-        'iconData': FontAwesomeIcons.venus,
-      },
-    ],
-    [
-      {
-        'iconLabel': 'Male',
-        'iconData': FontAwesomeIcons.mars,
-      },
-    ],
-    [
-      {
-        'iconLabel': 'Male',
-        'iconData': FontAwesomeIcons.mars,
-      },
-      {
-        'iconLabel': 'Male',
-        'iconData': FontAwesomeIcons.mars,
-      },
-    ],
+  final List<Map<String, List<Map<String, dynamic>>>> rowsCardData = [
+    {
+      'top': [
+        {
+          'label': 'Male',
+          'iconData': FontAwesomeIcons.mars,
+        },
+        {
+          'label': 'Female',
+          'iconData': FontAwesomeIcons.venus,
+        },
+      ],
+      'middle': [
+        {
+          'label': 'Height',
+          'iconData': FontAwesomeIcons.mars,
+        },
+      ],
+      'bottom': [
+        {
+          'label': 'Weight',
+          'iconData': FontAwesomeIcons.mars,
+        },
+        {
+          'label': 'Age',
+          'iconData': FontAwesomeIcons.mars,
+        },
+      ],
+    }
   ];
 
   @override
   Widget build(BuildContext context) {
-    int cardIndex = -1;
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('BMI CALCULATOR')),
       ),
       body: Column(
-        children: rowsCardData.map((rowCardData) {
-          return Expanded(
-            child: Row(
-              children: rowCardData.asMap().entries.map((entry) {
-                final Map<String, dynamic> cardData = entry.value;
-                final int rowCardIndex = ++cardIndex;
-                return ExpandedCard(
-                  cardColor: selectedIndex == rowCardIndex ? kActiveCardColor : kDefaultCardColor,
-                  iconLabel: cardData['iconLabel'],
-                  iconData: cardData['iconData'],
-                  onTap: () {
-                    updateSelectedIndex(rowCardIndex);
-                  },
-                );
-              }).toList(),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: rowsCardData.expand((rowCardData) {
+          return [
+            Expanded(
+              child: Row(
+                children: rowCardData['top']!.map<Widget>((data) {
+                  final int rowCardIndex = rowCardData['top']!.indexOf(data);
+                  return Expanded(
+                    child: CardContainer(
+                      onTap: () {
+                        updateSelectedIndex(rowCardIndex);
+                      },
+                      cardColor: selectedIndex == rowCardIndex ? kActiveCardColor : kDefaultCardColor,
+                      cardChild: IconContent(
+                        label: data['label'],
+                        iconData: data['iconData'],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
-          );
+            Expanded(
+              child: Row(
+                children: rowCardData['middle']!.map<Widget>((data) {
+                  final int rowCardIndex = rowCardData['middle']!.indexOf(data) + rowCardData['top']!.length;
+                  return Expanded(
+                    child: CardContainer(
+                      onTap: () {
+                        updateSelectedIndex(rowCardIndex);
+                      },
+                      cardColor: selectedIndex == rowCardIndex ? kActiveCardColor : kDefaultCardColor,
+                      cardChild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            data['label'],
+                            style: kLabelTextStyle,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                height.toString(),
+                                style: kBottomLabelTextStyle,
+                              ),
+                              const Text(
+                                'cm',
+                                style: kLabelTextStyle,
+                              ),
+                              Slider(
+                                value: height.toDouble(),
+                                min: 120.0,
+                                max: 220.0,
+                                activeColor: const Color(0xFFEB1555),
+                                inactiveColor: const Color(0xFF8D8E98),
+                                onChanged: (double value) {
+                                  setState(() {
+                                    height = value.toInt();
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: rowCardData['bottom']!.map<Widget>((data) {
+                  final int rowCardIndex = rowCardData['bottom']!.indexOf(data) + rowCardData['top']!.length + rowCardData['middle']!.length;
+                  return Expanded(
+                    child: CardContainer(
+                      onTap: () {
+                        updateSelectedIndex(rowCardIndex);
+                      },
+                      cardColor: selectedIndex == rowCardIndex ? kActiveCardColor : kDefaultCardColor,
+                      cardChild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            data['label'],
+                            style: kLabelTextStyle,
+                          ),
+                          const Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '180',
+                                style: kBottomLabelTextStyle,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ];
         }).toList(),
       ),
       bottomNavigationBar: Container(

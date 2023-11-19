@@ -8,11 +8,11 @@ const cardLabelTextStyle = TextStyle(
 class IconContent extends StatelessWidget {
   const IconContent({
     super.key,
-    required this.iconLabel,
+    required this.label,
     required this.iconData,
   });
 
-  final String iconLabel;
+  final String label;
   final IconData iconData;
 
   @override
@@ -26,7 +26,7 @@ class IconContent extends StatelessWidget {
         ),
         const SizedBox(height: 15.0),
         Text(
-          iconLabel,
+          label,
           style: cardLabelTextStyle,
         )
       ],
